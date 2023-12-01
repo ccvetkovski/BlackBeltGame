@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class DeerMovement : MonoBehaviour
@@ -23,6 +24,8 @@ public class DeerMovement : MonoBehaviour
     Vector3 velocity;
     public float gravity = -9.81f;
     bool isGrounded;
+
+    public Rigidbody rb;
 
     void Update()
     {
@@ -48,6 +51,17 @@ public class DeerMovement : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        {
+            anim.SetInteger("Animation", 1); //Walk
+        }
+        else
+        {
+            anim.SetInteger("Animation", 0); //Idle
+        }
+        
+        
         
         velocity.y += gravity * Time.deltaTime;
 
@@ -55,7 +69,7 @@ public class DeerMovement : MonoBehaviour
 
     }
 
-    void Start()
+    void Awake()
     {
         anim = GetComponentInChildren<Animator>();
     }

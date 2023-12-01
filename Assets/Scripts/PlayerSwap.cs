@@ -10,6 +10,7 @@ public class PlayerSwap : MonoBehaviour
     public int whichCharacter;
     public CinemachineVirtualCamera cam;
     public GameObject Deer;
+    public GameObject CardManager;
 
     void Start()
     {
@@ -61,11 +62,13 @@ public class PlayerSwap : MonoBehaviour
             {
                 Deer.GetComponent<Rigidbody>().isKinematic = true;
                 Deer.GetComponent<DeerMovement>().enabled = false;
+                CardManager.SetActive(true);
             }
             else
             {
                 Deer.GetComponent<Rigidbody>().isKinematic = false;
                 Deer.GetComponent<DeerMovement>().enabled = true;
+                CardManager.SetActive(false);
             }
         }
         cam.LookAt = character;
