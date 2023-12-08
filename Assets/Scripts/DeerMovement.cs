@@ -14,16 +14,11 @@ public class DeerMovement : MonoBehaviour
 
     public float sprintSpeed = 9f;
 
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
-
     float horizontalMove = 0f;
     public float jumpHeight = 3f;
 
     Vector3 velocity;
     public float gravity = -9.81f;
-    bool isGrounded;
 
     public Rigidbody rb;
 
@@ -34,13 +29,6 @@ public class DeerMovement : MonoBehaviour
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         horizontalMove = horizontal * speed;
-
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if(isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
 
         if(direction.magnitude >= 0.1f)
         {

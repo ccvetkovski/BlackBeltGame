@@ -7,10 +7,12 @@ using UnityEngine.EventSystems;
 using System.Numerics;
 using Vector2 = UnityEngine.Vector2;
 
-public class CardInFront : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardInFront : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public GameObject child;
     private RectTransform rect;
+    public GameObject abManager;
+    public AbilityManager.Ability ability;
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
@@ -28,5 +30,11 @@ public class CardInFront : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     void Start()
     {
         rect = gameObject.GetComponent<RectTransform>();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        abManager.GetComponent<AbilityManager>().RemoveAbility(ability);
+        Destroy(gameObject);
     }
 }
