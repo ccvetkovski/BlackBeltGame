@@ -189,3 +189,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   child: {fileID: 4045322452840651377}
+  abManager: {fileID: 0}
+  ability: 0

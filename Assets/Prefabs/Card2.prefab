@@ -189,3 +189,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   child: {fileID: 2727612718035178289}
+  isChosen: 0
+  ability: 1

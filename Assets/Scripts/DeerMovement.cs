@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class DeerMovement : MonoBehaviour
 {
-    public CharacterController controller;
+    //public CharacterController controller;
 
     public float speed = 6f;
     public float turnSmoothieTime = 0.1f;
     float turnSmoothVelocity;
     private Animator anim;
+
+    public GameObject playerSwap;
 
     public float sprintSpeed = 9f;
 
@@ -37,7 +39,7 @@ public class DeerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            rb.velocity = new Vector3(10, 0, 0);
         }
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
@@ -48,13 +50,35 @@ public class DeerMovement : MonoBehaviour
         {
             anim.SetInteger("Animation", 0); //Idle
         }
-        
-        
-        
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            rb.velocity = new Vector3(8, 0, 0);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            rb.velocity = new Vector3(-8, 0, 0);
+        }
+
+
+
         velocity.y += gravity * Time.deltaTime;
 
-        controller.Move(velocity * Time.deltaTime);
+    }
 
+    public void PressurePolliwog()
+    {
+        rb.AddForce(0, 1000000, 0, ForceMode.Impulse);
+        Debug.Log("Pressure Polliwog.");
+    }
+
+    public void UseAbility(AbilityManager.Ability whichAbility)
+    {
+        if(whichAbility == AbilityManager.Ability.PressurePolliwog)
+        {
+            PressurePolliwog();
+            playerSwap.GetComponent<PlayerSwap>().Swap();
+        }
     }
 
     void Awake()

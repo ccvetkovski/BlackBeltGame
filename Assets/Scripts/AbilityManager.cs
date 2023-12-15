@@ -8,6 +8,8 @@ public class AbilityManager : MonoBehaviour
 
     public GameObject cardViewer;
 
+    public GameObject player;
+
     public GameObject card1;
     public GameObject card2;
     public GameObject card3;
@@ -15,57 +17,60 @@ public class AbilityManager : MonoBehaviour
 
     public enum Ability
     {
-        Ability1,
-        Ability2,
-        Ability3,
-        Ability4
+        PressurePolliwog,
+        TongueTrap,
+        FoulFangs,
+        LiquidLungs,
+        PhantomProwl,
+        BlitzBurst
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        
+        RemoveAbility();
     }
 
     public void AddAbility(Ability a)
     {
         abilities.Add(a);
-        if (a == Ability.Ability1)
+        if (a == Ability.PressurePolliwog)
         {
             GameObject newCard = Instantiate(card1);
             newCard.transform.parent = cardViewer.transform;
         }
-        if (a == Ability.Ability2)
+        if (a == Ability.TongueTrap)
         {
             GameObject newCard = Instantiate(card2);
             newCard.transform.parent = cardViewer.transform;
         }
-        if (a == Ability.Ability3)
+        if (a == Ability.FoulFangs)
         {
             GameObject newCard = Instantiate(card3);
             newCard.transform.parent = cardViewer.transform;
         }
-        if (a == Ability.Ability4)
+        if (a == Ability.LiquidLungs)
         {
             GameObject newCard = Instantiate(card4);
             newCard.transform.parent = cardViewer.transform;
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    public void RemoveAbility()
     {
-        
-    }
-
-    public void RemoveAbility(Ability b)
-    {
-        for (int i = 0; i< abilities.Count; i++) 
+        for (int i = 0; i < cardViewer.transform.childCount; i++)
         {
-            if (abilities[i] == b)
+            if (cardViewer.transform.GetChild(i).GetComponent<CardInFront>().isChosen)
             {
-                abilities.Remove(abilities[i]);
+                AbilityManager.Ability ability = cardViewer.transform.GetChild(i).GetComponent<CardInFront>().ability;
+
+                //Apply your ability here
+                player.GetComponent<DeerMovement>().UseAbility(ability);
+
+                //Remove ability or card from the scene
+                abilities.Remove(ability);
+                Destroy(cardViewer.transform.GetChild(i).gameObject);
             }
         }
+
     }
 }

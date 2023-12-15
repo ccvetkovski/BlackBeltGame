@@ -11,12 +11,11 @@ public class CardInFront : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public GameObject child;
     private RectTransform rect;
-    public GameObject abManager;
+    public bool isChosen = false;
     public AbilityManager.Ability ability;
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        Debug.Log("Hovering over.");
         child.GetComponent<Canvas>().sortingOrder = child.GetComponent<Canvas>().sortingOrder = 1;
         rect.sizeDelta = new Vector2(111.7f, 180);
     }
@@ -34,7 +33,6 @@ public class CardInFront : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        abManager.GetComponent<AbilityManager>().RemoveAbility(ability);
-        Destroy(gameObject);
+        isChosen = true;
     }
 }
