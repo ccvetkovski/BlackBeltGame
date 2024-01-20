@@ -269,7 +269,7 @@ Transform:
   m_GameObject: {fileID: 105278850}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.6299999, y: 5.8, z: 0}
+  m_LocalPosition: {x: -1.6299999, y: 5.15, z: 0}
   m_LocalScale: {x: 0.5832, y: 0.57430565, z: 0.5792}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 157107815}
   m_Layer: 3
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1196,7 +1196,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: -50
     m_Right: 0
-    m_Top: -410
+    m_Top: -310
     m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: -60
@@ -1982,7 +1982,7 @@ Transform:
   m_GameObject: {fileID: 1814095358}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0.37, z: -0.052857995}
+  m_LocalPosition: {x: -3.24, y: 0.37, z: -0.052857995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2070,7 +2070,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5.17
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2099,13 +2099,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb89c6d5d2442c94381ec3829e05aa04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 11.25
+  speed: 9.5
   turnSmoothieTime: 0.1
   playerSwap: {fileID: 1376826531}
   sprintSpeed: 7.17
+  hs: {fileID: 8990727302007599056}
   jumpHeight: 3
+  boxCol: {fileID: 0}
   gravity: -9.1
-  rb: {fileID: 8990727302007599053}
+  playerRB: {fileID: 8990727302007599053}
+  swap: {fileID: 1376826532}
 --- !u!114 &8990727302007599056
 MonoBehaviour:
   m_ObjectHideFlags: 0

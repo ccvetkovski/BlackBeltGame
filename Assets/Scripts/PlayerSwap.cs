@@ -26,7 +26,7 @@ public class PlayerSwap : MonoBehaviour
         {
             if(whichCharacter == 0)
             {
-                whichCharacter = possibleCharacters.Count - 1;
+                switchCharacter();
             }
             else 
             {
@@ -61,13 +61,38 @@ public class PlayerSwap : MonoBehaviour
             if(character == possibleCharacters[1])
             {
                 Deer.GetComponent<Rigidbody>().isKinematic = true;
-                Deer.GetComponent<DeerMovement>().enabled = false;
                 CardManager.SetActive(true);
             }
             else
             {
                 Deer.GetComponent<Rigidbody>().isKinematic = false;
-                Deer.GetComponent<DeerMovement>().enabled = true;
+                CardManager.SetActive(false);
+            }
+        }
+        cam.LookAt = character;
+        cam.Follow = character;
+    }
+
+     public void switchCharacter()
+    {
+        Debug.Log("swap is running");
+        whichCharacter = (whichCharacter == 1) ? 0 : 1;
+        character = possibleCharacters[whichCharacter];
+        for (int i = 0; i < possibleCharacters.Count; i++)
+        {
+            if (possibleCharacters[i] != character)
+            {
+
+            }
+
+            if (character == possibleCharacters[1])
+            {
+                Deer.GetComponent<Rigidbody>().isKinematic = true;
+                CardManager.SetActive(true);
+            }
+            else
+            {
+                Deer.GetComponent<Rigidbody>().isKinematic = false;
                 CardManager.SetActive(false);
             }
         }

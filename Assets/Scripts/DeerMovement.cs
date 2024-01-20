@@ -16,31 +16,31 @@ public class DeerMovement : MonoBehaviour
 
     public float sprintSpeed = 9f;
 
+    public HealthSystem hs;
+
     float horizontalMove = 0f;
     public float jumpHeight = 3f;
+    public BoxCollider boxCol;
 
     Vector3 velocity;
     public float gravity = -9.81f;
 
-    public Rigidbody rb;
+    public Rigidbody playerRB;
 
-    void Update()
+    public PlayerSwap swap;
+
+    Vector3 direction = new Vector3(0f, 0f, 0f);
+
+    float SlerpTime=0;
+void Update()
     {
+        hs.damage = 20;
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        Debug.Log(hs.damage);
 
         horizontalMove = horizontal * speed;
-
-        if(direction.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothieTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            rb.velocity = new Vector3(10, 0, 0);
-        }
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
@@ -53,32 +53,97 @@ public class DeerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
         {
-            rb.velocity = new Vector3(8, 0, 0);
+            playerRB.velocity = new Vector3(8, playerRB.velocity.y, 0);
+            //var newRotation = Quaternion.LookRotation(new Vector3(1, 0, 0));
+            SlerpTime = SlerpTime + Time.deltaTime;
+
+            if (SlerpTime>1)
+            {
+                SlerpTime = 1;
+            }else if (SlerpTime < 0)
+            {
+                SlerpTime = 0;
+            }
+
+            playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
+            //playerRB.transform.forward = new Vector3(1, 0, 0);
+
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            rb.velocity = new Vector3(-8, 0, 0);
+            playerRB.velocity = new Vector3(-8, playerRB.velocity.y, 0);
+
+            SlerpTime = SlerpTime - Time.deltaTime;
+
+            if (SlerpTime <- 1)
+            {
+                SlerpTime = -1;
+            }
+            else if (SlerpTime > 0)
+            {
+                SlerpTime = 0;
+            }
+
+            playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(-1, 0, 0)), Time.deltaTime*10);
+            //playerRB.transform.forward = new Vector3(-1, 0, 0);
+        }
+        else
+        {
+            playerRB.velocity = new Vector3(0, playerRB.velocity.y, 0);
+            if (SlerpTime <0 && SlerpTime>-1)
+            {
+                SlerpTime = SlerpTime - Time.deltaTime;
+                playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(-1, 0, 0)), Time.deltaTime * 10);
+            }
+            else if (SlerpTime > 0 && SlerpTime < 1)
+            {
+                SlerpTime = SlerpTime + Time.deltaTime;
+                playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
+            }
         }
 
-
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            playerRB.AddForce(0, 15, 0, ForceMode.Impulse);
+            playerSwap.GetComponent<PlayerSwap>().Swap();
+        }
 
         velocity.y += gravity * Time.deltaTime;
 
     }
 
-    public void PressurePolliwog()
+    private void OnCollisionEnter(Collision collision)
     {
-        rb.AddForce(0, 1000000, 0, ForceMode.Impulse);
-        Debug.Log("Pressure Polliwog.");
+        if (collision.gameObject.tag == "Ground" && anim.GetBool("onAir") == true)
+        {
+            anim.SetTrigger("landTrigger");
+            anim.SetBool("onAir", false);
+        }
+    }
+
+
+    public void PressurePolliwog(Rigidbody playerRB)
+    {
+        anim.SetBool("onAir", true);
+        swap.switchCharacter();
+        playerRB.AddForce(0, 15, 0, ForceMode.Impulse);
+        anim.SetTrigger("jumpTrigger");
+        
     }
 
     public void UseAbility(AbilityManager.Ability whichAbility)
     {
-        if(whichAbility == AbilityManager.Ability.PressurePolliwog)
+        if (whichAbility == AbilityManager.Ability.PressurePolliwog)
         {
-            PressurePolliwog();
+            PressurePolliwog(playerRB);
             playerSwap.GetComponent<PlayerSwap>().Swap();
         }
+    }
+
+    public void Slam()
+    {
+        transform.GetComponent<Rigidbody>().AddForce(0, -20, 0, ForceMode.Impulse);
+        hs.damage = 50;
     }
 
     void Awake()
@@ -86,4 +151,3 @@ public class DeerMovement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
     }
 }
-
