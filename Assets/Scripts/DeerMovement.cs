@@ -38,8 +38,6 @@ void Update()
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Debug.Log(hs.damage);
-
         horizontalMove = horizontal * speed;
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
@@ -128,7 +126,14 @@ void Update()
         swap.switchCharacter();
         playerRB.AddForce(0, 15, 0, ForceMode.Impulse);
         anim.SetTrigger("jumpTrigger");
-        
+    }
+
+    public void TongueTrap(Rigidbody playerRB)
+    {
+        anim.SetBool("onAir", true);
+        swap.switchCharacter();
+        playerRB.AddForce(0, 15, 0, ForceMode.Impulse);
+        anim.SetTrigger("jumpTrigger");
     }
 
     public void UseAbility(AbilityManager.Ability whichAbility)
@@ -138,12 +143,17 @@ void Update()
             PressurePolliwog(playerRB);
             playerSwap.GetComponent<PlayerSwap>().Swap();
         }
+        if (whichAbility == AbilityManager.Ability.TongueTrap)
+        {
+            TongueTrap(playerRB);
+        }
     }
 
     public void Slam()
     {
         transform.GetComponent<Rigidbody>().AddForce(0, -20, 0, ForceMode.Impulse);
         hs.damage = 50;
+        Debug.Log(hs.damage);
     }
 
     void Awake()
