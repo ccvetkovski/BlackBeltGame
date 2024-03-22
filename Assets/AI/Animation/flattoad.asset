@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: flattoad
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 0}
-  AnimatorControllerGenerated: 0
+  AIAnimator: {fileID: 9100000, guid: 91a1c8dd4fd81ff42a9b780208edc4e0, type: 2}
+  AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
   MissingRuntimeController: 0
-  FilePath: 
+  FilePath: Assets/Boring Stuff/flattoad.overrideController
   AnimatorCullingMode: 0
   WalkFoldout: 0
   RunFoldout: 0
   TurnFoldout: 0
   NonCombatDeathFoldout: 0
-  NonCombatAnimationsFoldout: 0
-  NonCombatIdleFoldout: 0
+  NonCombatAnimationsFoldout: 1
+  NonCombatIdleFoldout: 1
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
   Type1IdleFoldout: 0
@@ -53,16 +53,19 @@ MonoBehaviour:
   Type1DodgeFoldout: 0
   Type2DodgeFoldout: 0
   AnimationProfileFoldout: 0
-  AnimatorSettingsFoldout: 0
+  AnimatorSettingsFoldout: 1
   Type1HitConditions: -1
   Type2HitConditions: -1
   Type1HitAnimationCooldown: 0.1
   Type2HitAnimationCooldown: 0.1
   EmoteAnimationList: []
   NonCombatAnimations:
-    IdleList: []
+    IdleList:
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
     IdleStationary:
-      AnimationSpeed: 0
+      AnimationSpeed: 2.2
       AnimationClip: {fileID: 0}
       Mirror: 0
     IdleWarning:
@@ -70,15 +73,15 @@ MonoBehaviour:
       AnimationClip: {fileID: 0}
       Mirror: 0
     WalkLeft:
-      AnimationSpeed: 0
+      AnimationSpeed: 1
       AnimationClip: {fileID: 0}
       Mirror: 0
     WalkForward:
-      AnimationSpeed: 0
+      AnimationSpeed: 1
       AnimationClip: {fileID: 0}
       Mirror: 0
     WalkRight:
-      AnimationSpeed: 0
+      AnimationSpeed: 1
       AnimationClip: {fileID: 0}
       Mirror: 0
     WalkBack:

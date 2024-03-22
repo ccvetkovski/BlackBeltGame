@@ -18,7 +18,7 @@ MonoBehaviour:
   AnimationsUpdated: 0
   AnimationListsChanged: 0
   MissingRuntimeController: 0
-  FilePath: Assets/Emerald AI/Demo/Demo Source/Animator Controllers/IK Example AI.overrideController
+  FilePath: Assets/AI/Demo/Demo Source/Animator Controllers/IK Example AI.overrideController
   AnimatorCullingMode: 0
   WalkFoldout: 0
   RunFoldout: 0

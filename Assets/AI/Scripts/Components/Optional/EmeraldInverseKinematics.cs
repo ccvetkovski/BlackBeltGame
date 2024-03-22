@@ -25,7 +25,7 @@ namespace EmeraldAI
         #region Private Variables
         List<MultiAimConstraint> m_MultiAimConstraints = new List<MultiAimConstraint>();
         Coroutine FadeRigCoroutine;
-        Transform m_AimSourceParent;
+        public Transform m_AimSourceParent;
         EmeraldSystem EmeraldComponent;
         Vector3 m_AimGoal;
         Vector3 CurrentTargetPosition;
