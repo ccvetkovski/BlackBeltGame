@@ -7,15 +7,15 @@ public class InverseKinematicsLegs : MonoBehaviour
     [SerializeField] LayerMask terrainLayer = default;
     [SerializeField] Transform body = default;
     [SerializeField] InverseKinematicsLegs otherFoot = default;
-    [SerializeField] float speed = 1; 
+    [SerializeField] float speed = 1;
     [SerializeField] float stepDistance = 4;
     [SerializeField] float stepLength = 4;
     [SerializeField] float stepHeight = 1;
     [SerializeField] Vector3 footOffset = default;
-    float footSpacing;
-    Vector3 oldPosition, currentPosition, newPosition;
+    public float footSpacing;
+    public Vector3 oldPosition, currentPosition, newPosition;
     Vector3 oldNormal, currentNormal, newNormal;
-    float lerp;
+    public float lerp;
 
     private void Start()
     {
