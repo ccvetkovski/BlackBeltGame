@@ -35,13 +35,22 @@ public class DeerMovement : MonoBehaviour
 
     public BoxCollider tongueCol;
 
+    public GameObject foulFangs;
+
+    public BoxCollider fangsObj;
+
 
     Vector3 direction = new Vector3(0f, 0f, 0f);
 
     float SlerpTime=0;
 
     public TongueTrap tongueCode;
-    
+
+    public FoulFangs fangsCode;
+
+    //Last Direction
+    int LastInputDirection; //A=4, D=6, W=8,S=2
+
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -49,19 +58,24 @@ public class DeerMovement : MonoBehaviour
 
         horizontalMove = horizontal * speed;
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W))
         {
             anim.SetInteger("Animation", 1); //Walk
         }
         else
         {
-            anim.SetInteger("Animation", 0); //Idle
+           anim.SetInteger("Animation", 0); //Idle
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             playerRB.velocity = new Vector3(8, playerRB.velocity.y, 0);
-            //var newRotation = Quaternion.LookRotation(new Vector3(1, 0, 0));
+
+            LastInputDirection = 4;
+
+            playerRB.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+            
             SlerpTime = SlerpTime + Time.deltaTime;
 
             if (SlerpTime>1)
@@ -73,13 +87,17 @@ public class DeerMovement : MonoBehaviour
             }
 
             playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
-            //playerRB.transform.forward = new Vector3(1, 0, 0);
+            
 
         }
         else if (Input.GetKey(KeyCode.D))
         {
             playerRB.velocity = new Vector3(-8, playerRB.velocity.y, 0);
 
+            LastInputDirection = 6;
+
+            playerRB.transform.rotation = Quaternion.Euler(0, 270, 0);
+            
             SlerpTime = SlerpTime - Time.deltaTime;
 
             if (SlerpTime <- 1)
@@ -92,10 +110,11 @@ public class DeerMovement : MonoBehaviour
             }
 
             playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(-1, 0, 0)), Time.deltaTime*10);
-            //playerRB.transform.forward = new Vector3(-1, 0, 0);
+            
         }
         else
         {
+            
             playerRB.velocity = new Vector3(0, playerRB.velocity.y, 0);
             if (SlerpTime <0 && SlerpTime>-1)
             {
@@ -108,6 +127,20 @@ public class DeerMovement : MonoBehaviour
                 playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
             }
         }
+        if (Input.GetKey(KeyCode.W))
+        {
+            LastInputDirection = 8;
+            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, -8);
+            playerRB.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            LastInputDirection = 2;
+            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, 8);
+            playerRB.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
 
         velocity.y += gravity * Time.deltaTime;
 
@@ -140,6 +173,14 @@ public class DeerMovement : MonoBehaviour
         tongueCode.waitTimer = 3; 
     }
 
+    public void FoulFangs(Rigidbody playerRB)
+    {
+        Debug.Log("Foul Fangs");
+        swap.switchCharacter(); 
+        foulFangs.SetActive(true); 
+        fangsCode.waitTimer = 3;
+    }
+
     
 
     public void UseAbility(AbilityManager.Ability whichAbility)
@@ -154,12 +195,17 @@ public class DeerMovement : MonoBehaviour
             TongueTrap(playerRB);
             playerSwap.GetComponent<PlayerSwap>().Swap();
         }
+        if (whichAbility == AbilityManager.Ability.FoulFangs)
+        {
+            FoulFangs(playerRB);
+            playerSwap.GetComponent<PlayerSwap>().Swap();
+        }
     }
 
     public void Slam()
     {
         transform.GetComponent<Rigidbody>().AddForce(0, -20, 0, ForceMode.Impulse);
-        hs.damage = 50;
+        hs.damage = 100;
         Debug.Log(hs.damage);
     }
 }

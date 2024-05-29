@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Faction Data
   m_EditorClassIdentifier: 
   FactionNameList:
-  - Red NPC
-  - Blue NPC
+  - Flattoad
+  - Petalstalker
   - Deer
   - Terrain
+  - Prey
+  - Croc
