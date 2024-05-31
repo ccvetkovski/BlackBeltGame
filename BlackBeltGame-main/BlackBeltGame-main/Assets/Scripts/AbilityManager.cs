@@ -14,6 +14,7 @@ public class AbilityManager : MonoBehaviour
     public GameObject card2;
     public GameObject card3;
     public GameObject card4;
+    public GameObject card5;
 
     public enum Ability
     {
@@ -49,9 +50,14 @@ public class AbilityManager : MonoBehaviour
             GameObject newCard = Instantiate(card3);
             newCard.transform.parent = cardViewer.transform;
         }
-        if (a == Ability.LiquidLungs)
+        if (a == Ability.BlitzBurst)
         {
             GameObject newCard = Instantiate(card4);
+            newCard.transform.parent = cardViewer.transform;
+        }
+        if (a == Ability.PhantomProwl)
+        {
+            GameObject newCard = Instantiate(card5);
             newCard.transform.parent = cardViewer.transform;
         }
     }

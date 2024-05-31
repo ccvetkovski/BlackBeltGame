@@ -48,6 +48,10 @@ public class DeerMovement : MonoBehaviour
 
     public FoulFangs fangsCode;
 
+    public PhantomProwl prowlCode;
+
+    public BlitzBurst blitzCode;
+
     //Last Direction
     int LastInputDirection; //A=4, D=6, W=8,S=2
 
@@ -69,7 +73,7 @@ public class DeerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            playerRB.velocity = new Vector3(8, playerRB.velocity.y, 0);
+            playerRB.velocity = new Vector3(speed, playerRB.velocity.y, 0);
 
             LastInputDirection = 4;
 
@@ -92,7 +96,7 @@ public class DeerMovement : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            playerRB.velocity = new Vector3(-8, playerRB.velocity.y, 0);
+            playerRB.velocity = new Vector3(-speed, playerRB.velocity.y, 0);
 
             LastInputDirection = 6;
 
@@ -130,14 +134,14 @@ public class DeerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             LastInputDirection = 8;
-            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, -8);
+            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, -speed);
             playerRB.transform.rotation = Quaternion.Euler(0, 180, 0);
 
         }
         else if (Input.GetKey(KeyCode.S))
         {
             LastInputDirection = 2;
-            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, 8);
+            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, speed);
             playerRB.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
@@ -181,7 +185,19 @@ public class DeerMovement : MonoBehaviour
         fangsCode.waitTimer = 3;
     }
 
-    
+    public void PhantomProwl(Rigidbody playerRB)
+    { 
+        Debug.Log("Phantom Prowl"); 
+        swap.switchCharacter(); 
+        prowlCode.waitTimer = 10;
+    }    
+
+    public void BlitzBurst(Rigidbody playerRB)
+    { 
+        Debug.Log("Blitz Burst"); 
+        swap.switchCharacter(); 
+        blitzCode.waitTimer = 5;
+    }
 
     public void UseAbility(AbilityManager.Ability whichAbility)
     {
@@ -199,6 +215,16 @@ public class DeerMovement : MonoBehaviour
         {
             FoulFangs(playerRB);
             playerSwap.GetComponent<PlayerSwap>().Swap();
+        }
+        if (whichAbility == AbilityManager.Ability.PhantomProwl) 
+        { 
+            PhantomProwl(playerRB); 
+            playerSwap.GetComponent<PlayerSwap>().Swap(); 
+        }
+        if (whichAbility == AbilityManager.Ability.BlitzBurst) 
+        { 
+            BlitzBurst(playerRB); 
+            playerSwap.GetComponent<PlayerSwap>().Swap(); 
         }
     }
 

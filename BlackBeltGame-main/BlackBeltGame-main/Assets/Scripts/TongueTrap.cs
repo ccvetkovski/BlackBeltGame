@@ -31,8 +31,6 @@ public class TongueTrap : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(waitTimer);
-
         if (waitTimer > 0)
         {
             enemy.GetComponent<BoxCollider>().enabled = false;
