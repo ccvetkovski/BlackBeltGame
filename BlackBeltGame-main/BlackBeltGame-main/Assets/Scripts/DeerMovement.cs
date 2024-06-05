@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Security.Cryptography;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -8,13 +10,15 @@ public class DeerMovement : MonoBehaviour
     [Header("Movement")]
 
     public float speed = 6f;
-    public float turnSmoothieTime = 0.1f;
+    //public float turnSmoothieTime = 0.1f;
     float turnSmoothVelocity;
     public Animator anim;
 
     public GameObject playerSwap;
 
     public float sprintSpeed = 9f;
+
+    public float rotSpeed = 2f;
 
     public HealthSystem hs;
 
@@ -52,8 +56,7 @@ public class DeerMovement : MonoBehaviour
 
     public BlitzBurst blitzCode;
 
-    //Last Direction
-    int LastInputDirection; //A=4, D=6, W=8,S=2
+    int LastInputDirection;
 
     void Update()
     {
@@ -62,93 +65,25 @@ public class DeerMovement : MonoBehaviour
 
         horizontalMove = horizontal * speed;
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W))
+
+
+        Vector3 move = new Vector3(-horizontal, 0, -vertical);
+
+        if (move != Vector3.zero)
         {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+
+            playerRB.velocity = move*speed;
             anim.SetInteger("Animation", 1); //Walk
+            //gameObject.transform.  = gameObject.transform.position + transform.forward * speed;
         }
         else
         {
-           anim.SetInteger("Animation", 0); //Idle
+            playerRB.velocity = Vector3.zero;
+            anim.SetInteger("Animation", 0); //Idle
         }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            playerRB.velocity = new Vector3(speed, playerRB.velocity.y, 0);
-
-            LastInputDirection = 4;
-
-            playerRB.transform.rotation = Quaternion.Euler(0, 90, 0);
-
-            
-            SlerpTime = SlerpTime + Time.deltaTime;
-
-            if (SlerpTime>1)
-            {
-                SlerpTime = 1;
-            }else if (SlerpTime < 0)
-            {
-                SlerpTime = 0;
-            }
-
-            playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
-            
-
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            playerRB.velocity = new Vector3(-speed, playerRB.velocity.y, 0);
-
-            LastInputDirection = 6;
-
-            playerRB.transform.rotation = Quaternion.Euler(0, 270, 0);
-            
-            SlerpTime = SlerpTime - Time.deltaTime;
-
-            if (SlerpTime <- 1)
-            {
-                SlerpTime = -1;
-            }
-            else if (SlerpTime > 0)
-            {
-                SlerpTime = 0;
-            }
-
-            playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(-1, 0, 0)), Time.deltaTime*10);
-            
-        }
-        else
-        {
-            
-            playerRB.velocity = new Vector3(0, playerRB.velocity.y, 0);
-            if (SlerpTime <0 && SlerpTime>-1)
-            {
-                SlerpTime = SlerpTime - Time.deltaTime;
-                playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(-1, 0, 0)), Time.deltaTime * 10);
-            }
-            else if (SlerpTime > 0 && SlerpTime < 1)
-            {
-                SlerpTime = SlerpTime + Time.deltaTime;
-                playerRB.transform.rotation = Quaternion.Slerp(playerRB.transform.rotation, Quaternion.LookRotation(new Vector3(1, 0, 0)), Time.deltaTime * 10);
-            }
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            LastInputDirection = 8;
-            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, -speed);
-            playerRB.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            LastInputDirection = 2;
-            playerRB.velocity = new Vector3(playerRB.velocity.x, 0, speed);
-            playerRB.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-
-
-        velocity.y += gravity * Time.deltaTime;
-
-        tongueCode.waitTimer = tongueCode.waitTimer - Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -230,7 +165,7 @@ public class DeerMovement : MonoBehaviour
 
     public void Slam()
     {
-        transform.GetComponent<Rigidbody>().AddForce(0, -20, 0, ForceMode.Impulse);
+        playerRB.AddForce(0, -20, 0, ForceMode.Impulse);
         hs.damage = 100;
         Debug.Log(hs.damage);
     }
