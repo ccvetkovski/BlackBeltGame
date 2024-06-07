@@ -1,39 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class HealthSystem : MonoBehaviour
 {
 
-    public int playerHealth;
+    public float playerHealth;
     public int damage;
-    public CinemachineVirtualCamera vCam;
-    private PostProcessVolume volume;
-    public Vignette vignette;
+    
+    [SerializeField] public Volume volume;
+    [SerializeField] public Vignette vignette;
+    
+    public float timeElapsed;
+    public float lerpDuration = 0.5f;
+    public float startValue = 0; 
+    public float endValue = 0.5f;
+    public float valueToLerp;
+    public float damageTimer = 0;
+    public bool canBeHit = true;
+    public bool wasHit = false;
+    public float lerpVignetteAmount;
+ 
+    public bool vignetteMove = false;
 
-    float timeElapsed;
-    float lerpDuration = 0.5f;
-    float startValue = 0;
-    float endValue = 0.5f;
-    float valueToLerp;
-    float damageTimer = 0;
-    bool canBeHit = true;
-    bool wasHit = false;
-    float lerpVignetteAmount;
-
-    private bool vignetteMove = false;
-
-    private float curVigIntensity = 0;
+    public float curVigIntensity = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = 100;
 
-        volume = vCam.GetComponent<PostProcessVolume>();
-
-        volume.profile.TryGetSettings(out vignette);
+        volume.profile.TryGet(out Vignette vignette);
     }
 
     // Update is called once per frame
@@ -58,7 +57,7 @@ public class HealthSystem : MonoBehaviour
                 vignetteMove = false;
                 timeElapsed = 0;
             }
-        }
+        } 
 
         if (wasHit == true)
         {
@@ -70,30 +69,11 @@ public class HealthSystem : MonoBehaviour
                 damageTimer = 0;
             }
         }
-    }
 
-    void TakeDamage(int damage)
-    {
-        playerHealth -= damage;
-        vignetteMove = true;
         if (playerHealth <= 0)
         {
             Debug.Log("Player is dead :(");
+            Destroy(gameObject);
         }
-
-
-    }
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "BoxEnemy" && canBeHit == true)
-        {
-            TakeDamage(25);
-            wasHit = true;
-            canBeHit = false;
-
-            curVigIntensity = vignette.intensity.value;
-        }
-
     }
 }

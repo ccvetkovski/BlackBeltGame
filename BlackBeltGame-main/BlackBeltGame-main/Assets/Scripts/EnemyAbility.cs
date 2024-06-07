@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class EnemyAbility : MonoBehaviour
 {
-    public AbilityManager.Ability ability;
+    public AbilityManager.Ability[] ability;
     public GameObject player;
-    public int healthPoints;
+    public float healthPoints;
 
     private void AddAbility()
     {
-        player.GetComponent<AbilityManager>().AddAbility(ability);
+        for (int i = 0; i < ability.Length; i++)
+        {
+            player.GetComponent<AbilityManager>().AddAbility(ability[i]);
+        }
     }
 
     void Start()

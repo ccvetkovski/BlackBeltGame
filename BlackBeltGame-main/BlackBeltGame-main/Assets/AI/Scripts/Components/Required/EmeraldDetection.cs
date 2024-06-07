@@ -630,7 +630,7 @@ namespace EmeraldAI
             }
             else
             {
-                Debug.Log("The " + Target.name + " object is set as a valid target (both Tag and Layer), but does not have a Faction Extension component on it. Please add one in order for this target to be properly detected.");
+                //Debug.Log("The " + Target.name + " object is set as a valid target (both Tag and Layer), but does not have a Faction Extension component on it. Please add one in order for this target to be properly detected.");
                 return false;
             }
         }

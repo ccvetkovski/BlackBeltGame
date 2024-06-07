@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class DeerMovement : MonoBehaviour
 {
@@ -66,7 +68,7 @@ public class DeerMovement : MonoBehaviour
         horizontalMove = horizontal * speed;
 
 
-
+        float vy = playerRB.velocity.y;
         Vector3 move = new Vector3(-horizontal, 0, -vertical);
 
         if (move != Vector3.zero)
@@ -75,13 +77,15 @@ public class DeerMovement : MonoBehaviour
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
 
-            playerRB.velocity = move*speed;
+            playerRB.velocity = new Vector3((move*speed).x, vy , (move * speed).z);
+
             anim.SetInteger("Animation", 1); //Walk
             //gameObject.transform.  = gameObject.transform.position + transform.forward * speed;
         }
         else
-        {
-            playerRB.velocity = Vector3.zero;
+        { 
+            playerRB.velocity = new Vector3(0, vy, 0);
+
             anim.SetInteger("Animation", 0); //Idle
         }
     }
