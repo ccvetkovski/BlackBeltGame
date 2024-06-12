@@ -14,9 +14,17 @@ public class EnemyDamage : MonoBehaviour
     public float waitTimer = 0;
     public GameObject enemy;
     public float damage;
+    public float playerDamage;
+    public BoxCollider collider;
 
     public EnemyAbility ea;
     public HealthSystem hs;
+
+    public bool isPlayerDamaged = false;
+
+    public Animator cameraAnim;
+
+    public float healRate;
 
     void Start()
     {
@@ -25,7 +33,6 @@ public class EnemyDamage : MonoBehaviour
         
     void OnTriggerEnter(Collider other) 
     {
-        Debug.Log(other.gameObject.name);
         if (other.gameObject.tag == "Prey")
         {
             enemy = other.gameObject;
@@ -37,11 +44,15 @@ public class EnemyDamage : MonoBehaviour
         {
             enemy = other.gameObject;
             hs = enemy.GetComponent<HealthSystem>();
-            waitTimer = 100;
-            hs.wasHit = true;
-            hs.canBeHit = false;
-            hs.curVigIntensity = hs.vignette.intensity.value;
-            hs.vignetteMove = true;
+            isPlayerDamaged = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other) 
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            isPlayerDamaged = false;
         }
     }
 
@@ -49,32 +60,56 @@ public class EnemyDamage : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        Debug.Log(hs.playerHealth);
-
-        gameObj.GetComponent<BoxCollider>().enabled = true;
+        collider.enabled = true;
 
         if (waitTimer > 0)
         {
-            //Debug.Log(ea.healthPoints);
             waitTimer = waitTimer - Time.deltaTime;
             ea.healthPoints -= damage;
-            hs.playerHealth -= damage;
+        }
+
+        if (isPlayerDamaged == true)
+        {
+            hs.playerHealth -= playerDamage;
+            cameraAnim.enabled = true;
         }
 
         if (waitTimer < 0 && enemy == null)
         {
             gameObject.SetActive(true);
             ea.healthPoints -= 0;
-            hs.playerHealth -= 0;
             waitTimer = 0;
         }
 
         if (waitTimer < 0)
         {
             enemy = null;
-            gameObject.SetActive(true);
             ea.healthPoints -= 0;
+        }
+
+        if (isPlayerDamaged == false && enemy == null)
+        {
+            gameObject.SetActive(true);
             hs.playerHealth -= 0;
+            cameraAnim.enabled = false;
+        }
+
+        if (isPlayerDamaged == false)
+        {
+            enemy = null;
+            gameObject.SetActive(true);
+            hs.playerHealth -= 0; 
+            cameraAnim.enabled = false;
+        }
+
+        if(isPlayerDamaged == false)
+        {
+            hs.playerHealth += healRate;
+        }
+
+        if(hs.playerHealth >= 101)
+        {
+            hs.playerHealth = 100;
         }
     }
 }

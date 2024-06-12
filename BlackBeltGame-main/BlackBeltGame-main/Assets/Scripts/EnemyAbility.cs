@@ -21,7 +21,7 @@ public class EnemyAbility : MonoBehaviour
         healthPoints = 100;
     }
 
-    void Die()
+    void Die() 
     {
         if (healthPoints <= 0)
         {

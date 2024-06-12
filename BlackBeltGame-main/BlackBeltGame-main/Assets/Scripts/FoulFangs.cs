@@ -32,11 +32,9 @@ public class FoulFangs : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(waitTimer);
 
         if (waitTimer > 0)
         {
-            Debug.Log(hs.damage);
             waitTimer = waitTimer - Time.deltaTime;
             ea.healthPoints -= 5;
         }

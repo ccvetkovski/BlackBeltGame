@@ -79,14 +79,14 @@ public class DeerMovement : MonoBehaviour
 
             playerRB.velocity = new Vector3((move*speed).x, vy , (move * speed).z);
 
-            anim.SetInteger("Animation", 1); //Walk
+            anim.SetBool("isWalking", true); //Walk
             //gameObject.transform.  = gameObject.transform.position + transform.forward * speed;
         }
         else
         { 
             playerRB.velocity = new Vector3(0, vy, 0);
 
-            anim.SetInteger("Animation", 0); //Idle
+            anim.SetBool("isWalking", false); //Walk
         }
     }
 
