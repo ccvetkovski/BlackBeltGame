@@ -22,7 +22,7 @@ public class PlayerSwap : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Return))
         {
             if(whichCharacter == 0)
             {
@@ -31,18 +31,6 @@ public class PlayerSwap : MonoBehaviour
             else 
             {
                 whichCharacter -= 1;
-            }
-            Swap();
-        }
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            if(whichCharacter == possibleCharacters.Count - 1)
-            {
-                whichCharacter = 0;
-            }
-            else 
-            {
-                whichCharacter += 1;
             }
             Swap();
         }

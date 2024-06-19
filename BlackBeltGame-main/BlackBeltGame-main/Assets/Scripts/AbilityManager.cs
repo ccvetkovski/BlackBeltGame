@@ -18,7 +18,7 @@ public class AbilityManager : MonoBehaviour
 
     public enum Ability
     {
-        PressurePolliwog,
+        PressurePolliwog, 
         TongueTrap,
         FoulFangs,
         LiquidLungs,

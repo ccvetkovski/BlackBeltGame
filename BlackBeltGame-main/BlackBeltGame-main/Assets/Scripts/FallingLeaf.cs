@@ -5,41 +5,41 @@ using UnityEngine;
 
 public class FallingLeaf : MonoBehaviour
 {
-    [Header("Variables")]
-    public float stayUpTime = 3;
-    public float stayDownTime = 3;
-    public float waitTimerUp = 0;
-    public float waitTimerDown = 0;
-
-    void Start()
-    {
-        waitTimerUp = 3;
+    public BoxCollider collider;
+    public MeshRenderer renderer;
+    public float waitTimer = 0;
+    public float disabledTime;
+    
+    private void OnTriggerEnter(Collider other) {
+        waitTimer = 1.5f;
     }
 
     void Update()
     {
-        if (waitTimerUp > 0)
-        {
-            gameObject.SetActive(true);
-            waitTimerUp = waitTimerUp - Time.deltaTime;
-            waitTimerDown = null;
+        if (waitTimer > 0)
+        {   
+            collider.enabled = true;
+            renderer.enabled = true;
+            disabledTime = (int)0;
+            waitTimer = waitTimer - Time.deltaTime;
         }
 
-        if (waitTimerUp < 0)
+        if (waitTimer < 0)
         {
-            waitTimerDown = 3;
+            disabledTime = 1.5f;
         }
 
-        if (waitTimerDown > 0)
-        {
-            gameObject.SetActive(false);
-            waitTimerDown = waitTimerDown - Time.deltaTime;
-            waitTimerUp = null;
+        if (disabledTime > 0)
+        {   
+            collider.enabled = false;
+            renderer.enabled = false;
+            waitTimer = (int)0;
+            disabledTime = disabledTime - Time.deltaTime;
         }
 
-        if (waitTimerDown < 0)
+        if (disabledTime < 0)
         {
-            waitTimerUp = 3;
+            waitTimer = 1.5f;
         }
     }
 }

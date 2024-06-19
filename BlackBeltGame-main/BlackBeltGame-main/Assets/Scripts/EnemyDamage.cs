@@ -16,6 +16,8 @@ public class EnemyDamage : MonoBehaviour
     public float damage;
     public float playerDamage;
     public BoxCollider collider;
+    public AudioSource hit;
+    [SerializeField] ParticleSystem hitParticle = null;
 
     public EnemyAbility ea;
     public HealthSystem hs;
@@ -29,6 +31,8 @@ public class EnemyDamage : MonoBehaviour
     void Start()
     {
         gameObject.SetActive(true);
+        cameraAnim.enabled = false;
+        hit.enabled = false;
     }
         
     void OnTriggerEnter(Collider other) 
@@ -53,6 +57,9 @@ public class EnemyDamage : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             isPlayerDamaged = false;
+            cameraAnim.enabled = false;
+            enemy = null;
+            hit.enabled = false;
         }
     }
 
@@ -70,8 +77,10 @@ public class EnemyDamage : MonoBehaviour
 
         if (isPlayerDamaged == true)
         {
-            hs.playerHealth -= playerDamage;
+            hs.playerHealth -= playerDamage; 
             cameraAnim.enabled = true;
+            hit.enabled = true;
+            hitParticle.Play();
         }
 
         if (waitTimer < 0 && enemy == null)
@@ -99,7 +108,8 @@ public class EnemyDamage : MonoBehaviour
             enemy = null;
             gameObject.SetActive(true);
             hs.playerHealth -= 0; 
-            cameraAnim.enabled = false;
+            hit.enabled = false;
+            hitParticle.Stop();
         }
 
         if(isPlayerDamaged == false)
@@ -107,9 +117,14 @@ public class EnemyDamage : MonoBehaviour
             hs.playerHealth += healRate;
         }
 
-        if(hs.playerHealth >= 101)
+        if(hs.playerHealth > 100)
         {
             hs.playerHealth = 100;
+        }
+
+        if(hs.playerHealth < 0)
+        {
+            hs.playerHealth = 0;
         }
     }
 }

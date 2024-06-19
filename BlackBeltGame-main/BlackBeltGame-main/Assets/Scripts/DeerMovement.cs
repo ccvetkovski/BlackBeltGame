@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Security.Cryptography;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -12,6 +11,8 @@ public class DeerMovement : MonoBehaviour
     [Header("Movement")]
 
     public float speed = 6f;
+
+    public AudioSource walk;
     //public float turnSmoothieTime = 0.1f;
     float turnSmoothVelocity;
     public Animator anim;
@@ -44,6 +45,8 @@ public class DeerMovement : MonoBehaviour
     public GameObject foulFangs;
 
     public BoxCollider fangsObj;
+    
+    public bool isJumping = false;
 
 
     Vector3 direction = new Vector3(0f, 0f, 0f);
@@ -80,6 +83,7 @@ public class DeerMovement : MonoBehaviour
             playerRB.velocity = new Vector3((move*speed).x, vy , (move * speed).z);
 
             anim.SetBool("isWalking", true); //Walk
+            walk.enabled = true;
             //gameObject.transform.  = gameObject.transform.position + transform.forward * speed;
         }
         else
@@ -87,6 +91,13 @@ public class DeerMovement : MonoBehaviour
             playerRB.velocity = new Vector3(0, vy, 0);
 
             anim.SetBool("isWalking", false); //Walk
+            walk.enabled = false;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space) && isJumping == false)
+        {
+            playerRB.AddForce(0, jumpHeight, 0, ForceMode.Impulse);
+            isJumping = true;
         }
     }
 
@@ -96,6 +107,13 @@ public class DeerMovement : MonoBehaviour
         {
             anim.SetTrigger("landTrigger");
             anim.SetBool("onAir", false); 
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.tag == "Ground")
+        {
+            isJumping = false;
         }
     }
 
@@ -160,10 +178,10 @@ public class DeerMovement : MonoBehaviour
             PhantomProwl(playerRB); 
             playerSwap.GetComponent<PlayerSwap>().Swap(); 
         }
-        if (whichAbility == AbilityManager.Ability.BlitzBurst) 
-        { 
-            BlitzBurst(playerRB); 
-            playerSwap.GetComponent<PlayerSwap>().Swap(); 
+        if (whichAbility == AbilityManager.Ability.BlitzBurst)
+        {
+            BlitzBurst(playerRB);
+            playerSwap.GetComponent<PlayerSwap>().Swap();
         }
     }
 

@@ -36,7 +36,7 @@ public class FoulFangs : MonoBehaviour
         if (waitTimer > 0)
         {
             waitTimer = waitTimer - Time.deltaTime;
-            ea.healthPoints -= 5;
+            ea.healthPoints -= 0.7f;
         }
 
         if (waitTimer < 0 && enemy == null)

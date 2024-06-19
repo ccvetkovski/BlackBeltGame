@@ -13,20 +13,22 @@ public class HealthSystem : MonoBehaviour
     public float damage = 5;
     public Animator camAnim;
     public EnemyDamage enemyDamage;
+    public GameObject loseScreen;
 
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = 100;
+        loseScreen.SetActive(false);
     }
 
     void Update()
     {
         if (playerHealth <= 0)
         {
-            Destroy(gameObject);  
+            loseScreen.SetActive(true);
             camAnim.enabled = false;
-            enemyDamage.isPlayerDamaged = true;
+            Destroy(gameObject);
         } 
     }
 }

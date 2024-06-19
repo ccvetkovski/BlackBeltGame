@@ -86,7 +86,7 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 16.36
+    m_Value: 20.29
   gaussianEnd:
     m_OverrideState: 1
     m_Value: 30
@@ -443,7 +443,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.335
+    m_Value: 0.29
   smoothness:
     m_OverrideState: 1
     m_Value: 1
@@ -527,7 +527,7 @@ MonoBehaviour:
     m_Value: 1.81
   scatter:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.751
   clamp:
     m_OverrideState: 1
     m_Value: 65472

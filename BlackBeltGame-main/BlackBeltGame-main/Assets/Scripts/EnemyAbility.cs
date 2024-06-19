@@ -7,6 +7,7 @@ public class EnemyAbility : MonoBehaviour
     public AbilityManager.Ability[] ability;
     public GameObject player;
     public float healthPoints;
+    public GameObject winScreen;
 
     private void AddAbility()
     {
@@ -19,6 +20,7 @@ public class EnemyAbility : MonoBehaviour
     void Start()
     {
         healthPoints = 100;
+        winScreen.SetActive(false);
     }
 
     void Die() 
@@ -29,6 +31,14 @@ public class EnemyAbility : MonoBehaviour
             AddAbility();
             Destroy(gameObject);
         }
+
+        if (healthPoints <= 0 && gameObject.name == "Croc")
+        {
+            winScreen.SetActive(true);
+            AddAbility();
+            Destroy(gameObject);
+        }
+
     }
 
     private void FixedUpdate()
@@ -38,10 +48,6 @@ public class EnemyAbility : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            healthPoints -= 25;
-            Debug.Log("Health points has been lowered.");
-        }
+        
     }
 }

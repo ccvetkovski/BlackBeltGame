@@ -7,6 +7,7 @@ TagManager:
   - BoxEnemy
   - Ground
   - Prey
+  - Platform
   layers:
   - Default
   - TransparentFX

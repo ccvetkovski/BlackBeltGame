@@ -9,7 +9,6 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI nametext;
     public TextMeshProUGUI dialogueText;
     public GameObject dialogueBox;
-
     public Animator anim;
 
     private Queue<string> sentences;
